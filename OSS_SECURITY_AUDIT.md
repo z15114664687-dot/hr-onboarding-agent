@@ -113,7 +113,7 @@ Release-owner actions:
 
 - close the parser alert through the verified fix and dismiss only the 11 manually reviewed path findings as false positives;
 - confirm code ownership/licensing and add any required NOTICE attribution;
-- verify the README badges/GIF and demo from a fresh public clone; and
+- verify the README badges/GIF on the public repository page; and
 - configure signed-tag tooling before creating `v0.1.0`.
 
 Production controls, not public-source blockers:

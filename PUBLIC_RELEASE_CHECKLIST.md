@@ -43,7 +43,8 @@ Status: **published as a new history-free public repository. Tag/release remains
 - [x] Create the `main` ruleset with required checks, Code Owner review, stale-review dismissal, no force push, and no deletion.
 - [x] Keep Actions token permissions read-only and do not enable duplicate CodeQL default setup.
 - [x] Pin the Python 3.11 base image digest after verifying the first successful build and keep digest updates enabled through Dependabot.
-- [ ] Confirm README badges/GIF render and run the demo from a fresh public clone.
+- [x] Run the zero-credential demo from a fresh public clone; `/health`, HR workspace, and candidate workspace return HTTP 200.
+- [ ] Confirm README badges and GIF render on the public repository page.
 - [x] Read back remote `main`, file list, README, and root history; verify exactly one clean public root history.
 - [ ] Create and sign the `v0.1.0` tag, then publish the prepared release notes.
 
