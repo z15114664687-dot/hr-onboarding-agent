@@ -1,0 +1,41 @@
+name: Container
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Build Python 3.11 image
+        run: docker build --tag hr-onboarding-agent:test .
+      - name: Start zero-credential demo
+        run: >-
+          docker run --detach --name hr-onboarding-agent-test --publish 8000:8000
+          --env DEMO_MODE=true --env ENVIRONMENT=local --env ALLOW_EXTERNAL_AI=false
+          --env DATABASE_URL=sqlite:////app/data/container-ci.db
+          hr-onboarding-agent:test
+      - name: Wait for health check
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8000/health; then
+              exit 0
+            fi
+            sleep 2
+          done
+          exit 1
+      - name: Show container logs
+        if: ${{ failure() }}
+        run: docker logs hr-onboarding-agent-test
+      - name: Stop container
+        if: ${{ always() }}
+        run: docker rm --force hr-onboarding-agent-test

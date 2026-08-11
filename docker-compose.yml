@@ -1,0 +1,28 @@
+services:
+  web:
+    build: .
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: sqlite:////app/data/hr-onboarding.db
+      UPLOAD_ROOT: /app/data/uploads
+    volumes:
+      - hr-onboarding-data:/app/data
+
+  feishu-listener:
+    build: .
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: sqlite:////app/data/hr-onboarding.db
+      UPLOAD_ROOT: /app/data/uploads
+    volumes:
+      - hr-onboarding-data:/app/data
+    command: python -m app.workers.feishu_event_listener
+    profiles:
+      - integrations
+
+volumes:
+  hr-onboarding-data:

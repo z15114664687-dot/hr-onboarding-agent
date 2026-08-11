@@ -1,0 +1,32 @@
+[
+  {
+    "candidate_name": "林晓安",
+    "email": "xiaoan.lin@example.com",
+    "department": "产品与技术",
+    "position": "AI 应用",
+    "employment_type": "校招-境内",
+    "city": "示例市",
+    "expected_onboard_offset_days": 14,
+    "demo_state": "in_progress"
+  },
+  {
+    "candidate_name": "Alex Chen",
+    "email": "alex.chen@example.com",
+    "department": "产品与技术",
+    "position": "后端工程",
+    "employment_type": "社招",
+    "city": "Demo City",
+    "expected_onboard_offset_days": -7,
+    "demo_state": "overdue"
+  },
+  {
+    "candidate_name": "Maya Patel",
+    "email": "maya.patel@example.com",
+    "department": "客户成功",
+    "position": "客户成功",
+    "employment_type": "社招",
+    "city": "Sample Bay",
+    "expected_onboard_offset_days": 30,
+    "demo_state": "materials_pending"
+  }
+]

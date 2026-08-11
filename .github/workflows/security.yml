@@ -1,0 +1,78 @@
+name: Supply Chain Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ENVIRONMENT: test
+      DEMO_MODE: "true"
+      ALLOW_EXTERNAL_AI: "false"
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-security.txt
+      - name: Install pinned audit dependencies
+        run: python -m pip install --requirement requirements-security.txt
+      - name: Build isolated runtime environment
+        run: |
+          python -m venv .audit-runtime
+          .audit-runtime/bin/python -m pip install --requirement requirements.txt
+          .audit-runtime/bin/python -m pip check
+      - name: Prepare evidence directory
+        run: mkdir -p artifacts/security
+      - name: Freeze resolved runtime dependencies
+        run: .audit-runtime/bin/python -m pip freeze > artifacts/security/runtime-freeze.txt
+      - name: Audit Python dependencies
+        run: >-
+          python -m pip_audit --requirement artifacts/security/runtime-freeze.txt
+          --no-deps --disable-pip --strict
+          --progress-spinner=off --format=json
+          --output=artifacts/security/pip-audit.json
+      - name: Generate CycloneDX SBOM
+        run: >-
+          cyclonedx-py environment .audit-runtime/bin/python
+          --output-format JSON --output-reproducible
+          --output-file artifacts/security/sbom.cdx.json
+      - name: Generate dependency license report
+        run: >-
+          pip-licenses --python .audit-runtime/bin/python
+          --format=json --with-urls
+          --output-file artifacts/security/licenses.json
+      - name: Run Python SAST
+        run: bandit --recursive app --quiet --severity-level medium --confidence-level medium --format json --output artifacts/security/bandit.json
+      - name: Scan tracked content for secrets
+        run: >-
+          detect-secrets scan --all-files
+          --exclude-files '^(\.audit-runtime/|docs/assets/demo/|static/candidate_import_template.xlsx$)'
+          > artifacts/security/detect-secrets.json
+      - name: Audit public snapshot
+        run: >-
+          python scripts/audit_public_release.py --root .
+          --report artifacts/security/public-release-audit.json
+      - name: Upload security evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: security-evidence-python-3.11
+          path: artifacts/security/
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,15 @@
+[project]
+name = "hr-onboarding-agent"
+version = "0.1.0"
+requires-python = ">=3.11"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+extend-exclude = ["test_artifacts"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.ruff.lint.per-file-ignores]
+"app/db/init_db.py" = ["F401"]

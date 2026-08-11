@@ -1,0 +1,88 @@
+version: 1
+name: Synthetic general onboarding workflow
+description: Generic fictional defaults; not copied from an employer policy.
+steps:
+  - node_name: background_check
+    display_name: 背调
+    offset: -7
+    unit: calendar_day
+    description: Offer 后尽快启动，示例用报到前 7 天作为截止日期。
+    owner_role: hrbp
+  - node_name: medical_check
+    display_name: 体检
+    offset: -3
+    unit: calendar_day
+    description: 报到前 3 天完成。
+    owner_role: hrbp
+  - node_name: document_submission
+    display_name: 预入职材料
+    offset: -3
+    unit: calendar_day
+    description: 报到前 3 天完成材料上传和审核。
+    owner_role: hrbp
+    group_name: 材料递交
+  - node_name: entry_preparation
+    display_name: 入职报到
+    offset: 0
+    unit: calendar_day
+    description: 入职当日完成示例办公准备事项。
+    owner_role: it_admin
+  - node_name: contract_signing
+    display_name: 合同签署
+    offset: 0
+    unit: calendar_day
+    description: 报到当天完成示例合同流程。
+    owner_role: hrbp
+  - node_name: compliance_commitment
+    display_name: 行为准则确认
+    offset: 1
+    unit: business_day
+    description: 示例：入职次日确认组织行为准则。
+    owner_role: hrbp
+  - node_name: conflict_of_interest_declaration
+    display_name: 利益冲突申报
+    offset: 5
+    unit: business_day
+    description: 示例：入职后 5 个工作日内完成人员信息和潜在利益冲突申报。
+    owner_role: compliance
+    group_name: 材料递交
+  - node_name: role_qualification_registration
+    display_name: 岗位资格登记
+    offset: 3
+    unit: business_day
+    description: 示例：对需要执业资格的岗位登记已审核的资格材料。
+    owner_role: hrbp
+    group_name: 材料递交
+  - node_name: records_transfer
+    display_name: 人事档案转移
+    offset: 5
+    unit: business_day
+    description: 示例：按适用规则提交人事档案转移信息。
+    owner_role: hrbp
+    group_name: 材料递交
+  - node_name: probation_month_3
+    display_name: 试用期考察
+    offset: 3
+    unit: month
+    description: 转正考核前置检查。
+    owner_role: manager
+    candidate_visible: false
+  - node_name: probation_month_4
+    display_name: 试用期考察
+    offset: 4
+    unit: month
+    description: 转正考核过程检查。
+    owner_role: manager
+    candidate_visible: false
+  - node_name: probation_month_5
+    display_name: 试用期考察
+    offset: 5
+    unit: month
+    description: 示例：提前发起转正申请准备。
+    owner_role: manager
+  - node_name: conversion_review
+    display_name: 转正考核
+    offset: 6
+    unit: month
+    description: 示例：在试用期末完成转正流程。
+    owner_role: manager

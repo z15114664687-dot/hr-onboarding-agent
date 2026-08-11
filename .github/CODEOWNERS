@@ -1,0 +1,12 @@
+# Replace this owner only if the repository is transferred.
+* @z15114664687-dot
+
+# Changes in these paths require explicit security and privacy review.
+/.github/ @z15114664687-dot
+/app/core/ @z15114664687-dot
+/app/providers/ @z15114664687-dot
+/app/api/routes/feishu_events.py @z15114664687-dot
+/app/api/routes/pages.py @z15114664687-dot
+/app/services/material_submission_flow.py @z15114664687-dot
+/Dockerfile @z15114664687-dot
+/requirements*.txt @z15114664687-dot

@@ -1,0 +1,24 @@
+version: 1
+name: Synthetic engineering onboarding workflow
+description: Compact example showing how maintainers can replace the default node catalog.
+steps:
+  - node_name: document_submission
+    display_name: Document submission
+    offset: -3
+    unit: calendar_day
+    owner_role: hrbp
+  - node_name: entry_preparation
+    display_name: Equipment and access
+    offset: 0
+    unit: calendar_day
+    owner_role: it_admin
+  - node_name: manager_check_in
+    display_name: Manager check-in
+    offset: 5
+    unit: business_day
+    owner_role: manager
+  - node_name: probation_review
+    display_name: Probation review
+    offset: 3
+    unit: month
+    owner_role: manager
