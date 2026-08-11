@@ -25,3 +25,7 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: python
+        versions:
+          - ">= 3.12"

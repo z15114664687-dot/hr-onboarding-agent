@@ -2,7 +2,7 @@
 
 Audit date: 2026-08-11  
 Scope: the history-free `hr-onboarding-agent-public` snapshot  
-Decision: **ready to create a new public repository; release tagging remains gated on the first remote Docker/Actions run and owner licensing confirmation.**
+Decision: **published after the initial remote Python, Docker, CodeQL, and supply-chain workflows passed; release tagging remains gated on owner licensing confirmation and signed-tag setup.**
 
 No known credential, private key, local database, upload directory, production endpoint, personal record, symlink, nested Git repository, oversized file, or current runtime dependency vulnerability remains in the release candidate. This is a point-in-time engineering review, not a certification, legal opinion, or guarantee that the application is vulnerability-free.
 
@@ -87,7 +87,7 @@ Residual: valid-looking PDF/Office files are not malware-scanned or content-disa
 - No `pull_request_target`, `write-all`, live secret, or event-text interpolation into shell commands is present.
 - CI separates Python tests, container smoke, SCA/SBOM, CodeQL, and dependency review.
 - Dependabot covers pip, GitHub Actions, and Docker.
-- GitHub secret scanning, push protection, private vulnerability reporting, and the `main` ruleset are repository settings and cannot be proven until the public repository exists.
+- GitHub secret scanning, push protection, private vulnerability reporting, read-only Actions permissions, and the `main` ruleset were enabled after the public repository was created.
 
 The Gemini gateway bind warning is an intentional server behavior: its host is configurable and defaults to an external container bind. Bandit B104 is suppressed on that single reviewed line with an explanatory comment.
 
@@ -99,11 +99,10 @@ The runtime inventory contains permissive Apache, BSD, ISC, MIT, PSF, Unlicense,
 
 Release-owner actions:
 
-- run the checked-in container workflow because no Docker CLI/daemon was available locally;
-- enable GitHub's repository-level security settings and verify the named required checks;
-- review and pin the Python base image digest after the first successful container build;
-- confirm code ownership/licensing and signed-tag setup; and
-- read back the remote tree/history after the first push.
+- review the uploaded supply-chain artifact and any CodeQL alerts;
+- confirm code ownership/licensing and add any required NOTICE attribution;
+- verify the README badges/GIF and demo from a fresh public clone; and
+- configure signed-tag tooling before creating `v0.1.0`.
 
 Production controls, not public-source blockers:
 
@@ -116,4 +115,4 @@ Production controls, not public-source blockers:
 
 ## Conclusion
 
-The code, data, dependency, workflow, provider, and history-isolation gates support creating a new public repository from this snapshot. Do not create the `v0.1.0` release until the initial GitHub Actions suite—including Docker build/health and CodeQL—passes and the owner completes the repository settings and licensing checks in `PUBLIC_RELEASE_CHECKLIST.md`.
+The code, data, dependency, workflow, provider, history-isolation, and initial remote CI gates support the published public source snapshot. Do not create the `v0.1.0` release until the owner completes the remaining licensing, artifact review, public-clone, and signed-tag checks in `PUBLIC_RELEASE_CHECKLIST.md`.

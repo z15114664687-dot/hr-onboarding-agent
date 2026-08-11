@@ -1,6 +1,6 @@
 # Public release checklist
 
-Status: **ready to create a new history-free public repository. Tag/release only after the remote-only checks below pass.**
+Status: **published as a new history-free public repository. Tag/release remains gated on the unchecked owner actions below.**
 
 ## Verified in the release candidate
 
@@ -22,29 +22,29 @@ Status: **ready to create a new history-free public repository. Tag/release only
 - [x] Real HR/candidate screenshots and a 4-frame GIF were captured from a temporary demo database and manually inspected.
 - [x] CI, container smoke, SCA/SBOM, CodeQL, dependency review, Dependabot, CODEOWNERS, issue templates, and repository security instructions are present.
 - [x] Every external GitHub Action is pinned to an immutable commit SHA.
-- [x] No repository was initialized, committed, pushed, or created by this task.
+- [x] The release-candidate review completed before the independent public Git history was created.
 
 ## Before creating the public repository
 
 - [ ] Confirm ownership or compatible licensing for every source file and add required NOTICE/copyright attribution.
-- [ ] Review `OSS_SECURITY_AUDIT.md`, `docs/RELEASE_NOTES_v0.1.0.md`, and `docs/GITHUB_LAUNCH.md`.
-- [ ] Run `PYTHON_BIN=python3.11 ./scripts/verify_release.sh` once more from the final source directory.
-- [ ] Run `python3.11 scripts/audit_public_release.py --root .` and require `pass`.
-- [ ] Inspect `git status --short` before the first commit and include only this clean snapshot.
+- [x] Review `OSS_SECURITY_AUDIT.md`, `docs/RELEASE_NOTES_v0.1.0.md`, and `docs/GITHUB_LAUNCH.md`.
+- [x] Run `PYTHON_BIN=python3.11 ./scripts/verify_release.sh` once more from the final source directory.
+- [x] Run `python3.11 scripts/audit_public_release.py --root .` and require `pass`.
+- [x] Inspect `git status --short` before the first commit and include only this clean snapshot.
 
 ## After the first push, before v0.1.0
 
-- [ ] Python 3.11 CI passes.
-- [ ] Docker image builds and the live `/health` smoke test passes; Docker was unavailable locally.
+- [x] Python 3.11 CI passes.
+- [x] Docker image builds and the live `/health` smoke test passes in GitHub Actions.
 - [ ] CodeQL completes with no unresolved high-severity alert.
 - [ ] Supply-chain workflow uploads reviewed pip-audit, runtime freeze, SBOM, license, Bandit, secret-scan, and snapshot-audit evidence.
-- [ ] Dependabot recognizes pip, GitHub Actions, and Docker.
-- [ ] Enable dependency graph, Dependabot alerts/security updates, secret scanning, push protection, and private vulnerability reporting.
-- [ ] Create the `main` ruleset with required checks, Code Owner review, stale-review dismissal, no force push, and no deletion.
-- [ ] Keep Actions token permissions read-only and do not enable duplicate CodeQL default setup.
-- [ ] Pin the Python base image digest after verifying the first successful build and update it through Dependabot.
+- [x] Dependabot recognizes pip, GitHub Actions, and Docker.
+- [x] Enable dependency graph, Dependabot alerts/security updates, secret scanning, push protection, and private vulnerability reporting.
+- [x] Create the `main` ruleset with required checks, Code Owner review, stale-review dismissal, no force push, and no deletion.
+- [x] Keep Actions token permissions read-only and do not enable duplicate CodeQL default setup.
+- [x] Pin the Python 3.11 base image digest after verifying the first successful build and keep digest updates enabled through Dependabot.
 - [ ] Confirm README badges/GIF render and run the demo from a fresh public clone.
-- [ ] Read back remote `main`, file list, README, and root history; verify exactly one clean public root history.
+- [x] Read back remote `main`, file list, README, and root history; verify exactly one clean public root history.
 - [ ] Create and sign the `v0.1.0` tag, then publish the prepared release notes.
 
 ## Production deployment controls
