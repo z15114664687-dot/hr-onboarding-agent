@@ -84,6 +84,9 @@ def test_github_workflows_parse_pin_actions_and_use_safe_triggers() -> None:
         for action in re.findall(r"uses:\s*([^\s#]+)", text):
             assert re.fullmatch(r"[^@]+@[0-9a-f]{40}", action), f"{workflow.name}: unpinned action {action}"
 
+    security_workflow = (workflow_root / "security.yml").read_text(encoding="utf-8")
+    assert r"\.git/" in security_workflow
+
 
 def test_dependabot_covers_runtime_actions_and_container() -> None:
     dependabot_path = Path(__file__).resolve().parents[1] / ".github" / "dependabot.yml"

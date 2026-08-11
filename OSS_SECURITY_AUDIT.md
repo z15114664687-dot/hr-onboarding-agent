@@ -23,16 +23,16 @@ No known credential, private key, local database, upload directory, production e
 | Ruff | 0 findings with Python 3.11 target |
 | Compile | `app` and `scripts` compile successfully |
 | Dependency consistency | `pip check` reports no broken requirements |
-| pip-audit 2.10.1 | 37 resolved runtime components; 0 known vulnerabilities |
-| CycloneDX | JSON SBOM 1.6; 37 components and 37 dependency entries |
-| License inventory | 37 packages; no UNKNOWN, GPL, AGPL, or proprietary result |
+| pip-audit 2.10.1 | 37 locally resolved components and 38 in the first remote isolated runtime; 0 known vulnerabilities in both |
+| CycloneDX | First remote JSON SBOM 1.6: 40 components and dependency entries, including 38 frozen runtime packages plus pip and setuptools |
+| License inventory | First remote inventory: 38 packages; no UNKNOWN, GPL, AGPL, or proprietary result |
 | Bandit 1.9.4 | 0 medium/high findings after manual review and XML hardening |
-| detect-secrets 1.5.0 | 2 synthetic unit-test keyword candidates; both manually verified false positives |
+| detect-secrets 1.5.0 | 2 synthetic unit-test keyword candidates; both manually verified false positives; `.git/` metadata excluded from remote scans |
 | Deterministic snapshot audit | 166 publishable files; 0 blocking findings |
 | Browser capture | 2 PNG screenshots and one 4-frame GIF from real demo pages |
 | Workflow configuration | Valid/invalid/unsafe YAML and CI configuration regression tests pass |
 
-Generated SCA, SBOM, license, Bandit, secret-scan, and snapshot-audit evidence is kept under ignored `artifacts/security/` locally and uploaded as a 30-day GitHub Actions artifact.
+Generated SCA, SBOM, license, Bandit, secret-scan, and snapshot-audit evidence is kept under ignored `artifacts/security/` locally and uploaded as a 30-day GitHub Actions artifact. The first remote artifact was downloaded and reviewed; the workflow now excludes ephemeral `.git/` checkout metadata after its `FETCH_HEAD` commit SHA appeared as a non-secret high-entropy candidate.
 
 ## Dependency remediation performed
 
@@ -99,7 +99,7 @@ The runtime inventory contains permissive Apache, BSD, ISC, MIT, PSF, Unlicense,
 
 Release-owner actions:
 
-- review the uploaded supply-chain artifact and any CodeQL alerts;
+- review any CodeQL alerts;
 - confirm code ownership/licensing and add any required NOTICE attribution;
 - verify the README badges/GIF and demo from a fresh public clone; and
 - configure signed-tag tooling before creating `v0.1.0`.

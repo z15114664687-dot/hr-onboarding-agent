@@ -12,11 +12,11 @@ Status: **published as a new history-free public repository. Tag/release remains
 - [x] One-command demo performs no external AI or Feishu/Lark call.
 - [x] Python 3.11.15 full suite passes: 259 tests.
 - [x] Ruff, compileall, and `pip check` pass.
-- [x] Current pip-audit covers 37 resolved runtime components and reports 0 known vulnerabilities.
-- [x] CycloneDX 1.6 SBOM contains 37 components and 37 dependency entries.
-- [x] Runtime license inventory contains 37 packages and no unknown/GPL/AGPL/proprietary result.
+- [x] Local pip-audit covered 37 resolved runtime components; the first remote isolated runtime covered 38; both reported 0 known vulnerabilities.
+- [x] The first remote CycloneDX 1.6 SBOM contains 40 components and dependency entries: 38 frozen runtime packages plus pip and setuptools.
+- [x] The first remote runtime license inventory contains 38 packages and no unknown/GPL/AGPL/proprietary result.
 - [x] Bandit medium/high scan has 0 findings after `defusedxml` hardening and one reviewed server-bind exception.
-- [x] detect-secrets candidates were manually reviewed as synthetic unit-test values; deterministic public audit reports 0 findings across 166 release files.
+- [x] detect-secrets candidates were manually reviewed as synthetic unit-test values; `.git/` metadata is excluded from remote scans; deterministic public audit reports 0 findings across 166 release files.
 - [x] OpenAI provider text/schema/image/PDF/timeout behavior is covered by offline mocked tests.
 - [x] Workflow YAML is bounded, safe-loaded, strictly validated, configurable, and covered by negative tests.
 - [x] Real HR/candidate screenshots and a 4-frame GIF were captured from a temporary demo database and manually inspected.
@@ -37,7 +37,7 @@ Status: **published as a new history-free public repository. Tag/release remains
 - [x] Python 3.11 CI passes.
 - [x] Docker image builds and the live `/health` smoke test passes in GitHub Actions.
 - [ ] CodeQL completes with no unresolved high-severity alert.
-- [ ] Supply-chain workflow uploads reviewed pip-audit, runtime freeze, SBOM, license, Bandit, secret-scan, and snapshot-audit evidence.
+- [x] Supply-chain workflow uploads reviewed pip-audit, runtime freeze, SBOM, license, Bandit, secret-scan, and snapshot-audit evidence.
 - [x] Dependabot recognizes pip, GitHub Actions, and Docker.
 - [x] Enable dependency graph, Dependabot alerts/security updates, secret scanning, push protection, and private vulnerability reporting.
 - [x] Create the `main` ruleset with required checks, Code Owner review, stale-review dismissal, no force push, and no deletion.
