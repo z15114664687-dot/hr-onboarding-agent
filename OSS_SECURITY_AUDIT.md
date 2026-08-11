@@ -2,7 +2,7 @@
 
 Audit date: 2026-08-11  
 Scope: the history-free `hr-onboarding-agent-public` snapshot  
-Decision: **published after the remote Python, Docker, CodeQL, and supply-chain workflows passed and all high-severity CodeQL alerts were resolved or dispositioned; release tagging remains gated on owner licensing confirmation and signed-tag setup.**
+Decision: **published after the remote Python, Docker, CodeQL, and supply-chain workflows passed and all high-severity CodeQL alerts were resolved or dispositioned. The owner confirmed the Apache-2.0 release rights, the public README media rendered successfully, and signed release `v0.1.0` was published with a GitHub-verified signature.**
 
 No known credential, private key, local database, upload directory, production endpoint, personal record, symlink, nested Git repository, oversized file, or current runtime dependency vulnerability remains in the release candidate. This is a point-in-time engineering review, not a certification, legal opinion, or guarantee that the application is vulnerability-free.
 
@@ -107,15 +107,15 @@ The valid parser finding remains fixed in this pull request and the pull-request
 
 ## License review
 
-The runtime inventory contains permissive Apache, BSD, ISC, MIT, PSF, Unlicense, and certifi's MPL-2.0 package terms. No unknown, GPL, AGPL, or proprietary classifier was reported. Dependency license compatibility does not establish ownership of this application's source; the repository owner must still confirm the right to release every included source file under Apache-2.0 and add any required NOTICE attribution.
+The runtime inventory contains permissive Apache, BSD, ISC, MIT, PSF, Unlicense, and certifi's MPL-2.0 package terms. No unknown, GPL, AGPL, or proprietary classifier was reported. On 2026-08-11, the repository owner confirmed the right to release every included source file under Apache-2.0. This is an owner attestation rather than an independent legal opinion; the dependency review identified no additional required NOTICE attribution.
 
-## Residual release and production gaps
+## Release verification and production gaps
 
-Release-owner actions:
+Release-owner actions completed on 2026-08-11:
 
-- confirm code ownership/licensing and add any required NOTICE attribution;
-- verify the README badges/GIF on the public repository page; and
-- configure signed-tag tooling before creating `v0.1.0`.
+- confirmed code ownership and Apache-2.0 release rights;
+- verified the README badges, GIF, screenshots, and architecture diagram on the public repository page; and
+- registered a dedicated Ed25519 GitHub Signing Key, created signed tag `v0.1.0`, and published the GitHub-verified release.
 
 Production controls, not public-source blockers:
 
@@ -128,4 +128,4 @@ Production controls, not public-source blockers:
 
 ## Conclusion
 
-The code, data, dependency, workflow, provider, history-isolation, and remote CI gates support the published public source snapshot. Do not create the `v0.1.0` release until the owner completes the remaining licensing, README-rendering, and signed-tag checks in `PUBLIC_RELEASE_CHECKLIST.md`.
+The code, data, dependency, workflow, provider, history-isolation, remote CI, licensing-attestation, README-rendering, and signed-tag gates support the published `v0.1.0` public release. The production controls above remain mandatory before processing real HR data.

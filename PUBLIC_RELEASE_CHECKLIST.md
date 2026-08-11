@@ -1,6 +1,6 @@
 # Public release checklist
 
-Status: **published as a new history-free public repository. Tag/release remains gated on the unchecked owner actions below.**
+Status: **published as a new history-free public repository with GitHub-verified signed release `v0.1.0`.**
 
 ## Verified in the release candidate
 
@@ -26,7 +26,7 @@ Status: **published as a new history-free public repository. Tag/release remains
 
 ## Before creating the public repository
 
-- [ ] Confirm ownership or compatible licensing for every source file and add required NOTICE/copyright attribution.
+- [x] Repository owner confirmed Apache-2.0 release rights for every included source file; the dependency review identified no additional required NOTICE attribution.
 - [x] Review `OSS_SECURITY_AUDIT.md`, `docs/RELEASE_NOTES_v0.1.0.md`, and `docs/GITHUB_LAUNCH.md`.
 - [x] Run `PYTHON_BIN=python3.11 ./scripts/verify_release.sh` once more from the final source directory.
 - [x] Run `python3.11 scripts/audit_public_release.py --root .` and require `pass`.
@@ -44,9 +44,9 @@ Status: **published as a new history-free public repository. Tag/release remains
 - [x] Keep Actions token permissions read-only and do not enable duplicate CodeQL default setup.
 - [x] Pin the Python 3.11 base image digest after verifying the first successful build and keep digest updates enabled through Dependabot.
 - [x] Run the zero-credential demo from a fresh public clone; `/health`, HR workspace, and candidate workspace return HTTP 200.
-- [ ] Confirm README badges and GIF render on the public repository page.
+- [x] Confirm README badges, GIF, screenshots, and architecture diagram render on the public repository page.
 - [x] Read back remote `main`, file list, README, and root history; verify exactly one clean public root history.
-- [ ] Create and sign the `v0.1.0` tag, then publish the prepared release notes.
+- [x] Create and sign the `v0.1.0` tag, publish the prepared release notes, and confirm GitHub displays the signature as Verified.
 
 ## Production deployment controls
 
