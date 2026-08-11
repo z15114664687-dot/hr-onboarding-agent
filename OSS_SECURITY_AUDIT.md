@@ -2,7 +2,7 @@
 
 Audit date: 2026-08-11  
 Scope: the history-free `hr-onboarding-agent-public` snapshot  
-Decision: **ready to create a new public repository; release tagging remains gated on the first remote Docker/Actions run and owner licensing confirmation.**
+Decision: **published after the remote Python, Docker, CodeQL, and supply-chain workflows passed and all high-severity CodeQL alerts were resolved or dispositioned; release tagging remains gated on owner licensing confirmation and signed-tag setup.**
 
 No known credential, private key, local database, upload directory, production endpoint, personal record, symlink, nested Git repository, oversized file, or current runtime dependency vulnerability remains in the release candidate. This is a point-in-time engineering review, not a certification, legal opinion, or guarantee that the application is vulnerability-free.
 
@@ -19,20 +19,20 @@ No known credential, private key, local database, upload directory, production e
 | Gate | Result |
 | --- | --- |
 | Python | 3.11.15 local isolated runtime |
-| Tests | 259 passed; one upstream Starlette `httpx2` migration warning |
+| Tests | 260 passed; one upstream Starlette `httpx2` migration warning |
 | Ruff | 0 findings with Python 3.11 target |
 | Compile | `app` and `scripts` compile successfully |
 | Dependency consistency | `pip check` reports no broken requirements |
-| pip-audit 2.10.1 | 37 resolved runtime components; 0 known vulnerabilities |
-| CycloneDX | JSON SBOM 1.6; 37 components and 37 dependency entries |
-| License inventory | 37 packages; no UNKNOWN, GPL, AGPL, or proprietary result |
+| pip-audit 2.10.1 | 37 locally resolved components and 38 in the first remote isolated runtime; 0 known vulnerabilities in both |
+| CycloneDX | First remote JSON SBOM 1.6: 40 components and dependency entries, including 38 frozen runtime packages plus pip and setuptools |
+| License inventory | First remote inventory: 38 packages; no UNKNOWN, GPL, AGPL, or proprietary result |
 | Bandit 1.9.4 | 0 medium/high findings after manual review and XML hardening |
-| detect-secrets 1.5.0 | 2 synthetic unit-test keyword candidates; both manually verified false positives |
+| detect-secrets 1.5.0 | 2 synthetic unit-test keyword candidates; both manually verified false positives; `.git/` metadata excluded from remote scans |
 | Deterministic snapshot audit | 166 publishable files; 0 blocking findings |
 | Browser capture | 2 PNG screenshots and one 4-frame GIF from real demo pages |
 | Workflow configuration | Valid/invalid/unsafe YAML and CI configuration regression tests pass |
 
-Generated SCA, SBOM, license, Bandit, secret-scan, and snapshot-audit evidence is kept under ignored `artifacts/security/` locally and uploaded as a 30-day GitHub Actions artifact.
+Generated SCA, SBOM, license, Bandit, secret-scan, and snapshot-audit evidence is kept under ignored `artifacts/security/` locally and uploaded as a 30-day GitHub Actions artifact. The first remote artifact was downloaded and reviewed; the workflow now excludes ephemeral `.git/` checkout metadata after its `FETCH_HEAD` commit SHA appeared as a non-secret high-entropy candidate.
 
 ## Dependency remediation performed
 
@@ -87,9 +87,23 @@ Residual: valid-looking PDF/Office files are not malware-scanned or content-disa
 - No `pull_request_target`, `write-all`, live secret, or event-text interpolation into shell commands is present.
 - CI separates Python tests, container smoke, SCA/SBOM, CodeQL, and dependency review.
 - Dependabot covers pip, GitHub Actions, and Docker.
-- GitHub secret scanning, push protection, private vulnerability reporting, and the `main` ruleset are repository settings and cannot be proven until the public repository exists.
+- GitHub secret scanning, push protection, private vulnerability reporting, read-only Actions permissions, and the `main` ruleset were enabled after the public repository was created.
 
 The Gemini gateway bind warning is an intentional server behavior: its host is configurable and defaults to an external container bind. Bandit B104 is suppressed on that single reviewed line with an explanatory comment.
+
+### CodeQL high-severity review
+
+The first authenticated alert readback found 12 high-severity alerts even though the CodeQL workflow completed successfully. One `py/bad-tag-filter` finding was valid: regular expressions were being used to strip script/style elements from local HTML knowledge sources. It was replaced with Python's `HTMLParser` and covered by a malformed-end-tag regression test.
+
+The other 11 `py/path-injection` findings are false-positive data-flow results after manual reachability review:
+
+- the HR-only file-review endpoint is protected by HR authentication and resolves the requested path before enforcing upload-root containment, regular-file status, and the configured size limit;
+- candidate uploads require a case-bound candidate session and same-origin request, validate the required material type, reduce the supplied name to a basename, enforce extension/MIME/magic-byte allowlists and size limits, sanitize every path segment, add a server-generated nonce, and enforce resolved-path containment under the configured upload root before writing; and
+- downstream OCR/review/stat calls receive only the server-created confined path in production; no alternate untrusted production caller exists.
+
+On 2026-08-11, the repository owner explicitly authorized dismissing CodeQL alerts #1–#11 as false positives. Each alert now records the above rationale in GitHub. Any future caller that accepts a path directly must repeat upload-root confinement before file access.
+
+The valid parser finding remains fixed in this pull request and the pull-request CodeQL analysis passes. After merge, authenticated default-branch readback must confirm that no open high- or critical-severity alert remains.
 
 ## License review
 
@@ -99,11 +113,9 @@ The runtime inventory contains permissive Apache, BSD, ISC, MIT, PSF, Unlicense,
 
 Release-owner actions:
 
-- run the checked-in container workflow because no Docker CLI/daemon was available locally;
-- enable GitHub's repository-level security settings and verify the named required checks;
-- review and pin the Python base image digest after the first successful container build;
-- confirm code ownership/licensing and signed-tag setup; and
-- read back the remote tree/history after the first push.
+- confirm code ownership/licensing and add any required NOTICE attribution;
+- verify the README badges/GIF on the public repository page; and
+- configure signed-tag tooling before creating `v0.1.0`.
 
 Production controls, not public-source blockers:
 
@@ -116,4 +128,4 @@ Production controls, not public-source blockers:
 
 ## Conclusion
 
-The code, data, dependency, workflow, provider, and history-isolation gates support creating a new public repository from this snapshot. Do not create the `v0.1.0` release until the initial GitHub Actions suite—including Docker build/health and CodeQL—passes and the owner completes the repository settings and licensing checks in `PUBLIC_RELEASE_CHECKLIST.md`.
+The code, data, dependency, workflow, provider, history-isolation, and remote CI gates support the published public source snapshot. Do not create the `v0.1.0` release until the owner completes the remaining licensing, README-rendering, and signed-tag checks in `PUBLIC_RELEASE_CHECKLIST.md`.

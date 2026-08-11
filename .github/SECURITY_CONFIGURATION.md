@@ -25,7 +25,7 @@ Create a branch ruleset targeting `main`:
 - require conversation resolution;
 - require the `Python 3.11`, `docker`, `audit`, `Analyze Python`, and `review` checks after their first successful run;
 - block force pushes and branch deletion; and
-- allow repository administrators to bypass only for documented incident recovery.
+- allow only the repository owner to use a pull-request-only bypass for documented incident recovery or a recorded solo-maintainer approval deadlock.
 
 ## Actions
 

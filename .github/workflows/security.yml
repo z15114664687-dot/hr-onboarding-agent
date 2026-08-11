@@ -62,7 +62,7 @@ jobs:
       - name: Scan tracked content for secrets
         run: >-
           detect-secrets scan --all-files
-          --exclude-files '^(\.audit-runtime/|docs/assets/demo/|static/candidate_import_template.xlsx$)'
+          --exclude-files '^(\.git/|\.audit-runtime/|docs/assets/demo/|static/candidate_import_template.xlsx$)'
           > artifacts/security/detect-secrets.json
       - name: Audit public snapshot
         run: >-

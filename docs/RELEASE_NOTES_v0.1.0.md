@@ -41,4 +41,4 @@ This is the initial release. Copy `.env.example` to `.env`, keep `DEMO_MODE=true
 
 ## Verification
 
-The release candidate is verified locally on Python 3.11.15 with 259 offline tests, Ruff, compilation, dependency consistency, safe-YAML regression tests, mocked OpenAI transport tests, a real-browser demo capture, and a 166-file deterministic public-snapshot audit. The final pip-audit found no known vulnerability across 37 resolved runtime components. Docker build and repository-backed GitHub security settings receive their final proof in the first public Actions run.
+The release candidate is verified locally on Python 3.11.15 with 260 offline tests, Ruff, compilation, dependency consistency, safe-YAML regression tests, mocked OpenAI transport tests, a real-browser demo capture, and a 166-file deterministic public-snapshot audit. Local and first-public-run pip-audit evidence found no known vulnerability across 37 and 38 resolved runtime components respectively. The first public Actions runs also proved the Docker health smoke, CodeQL workflow, supply-chain evidence upload, and repository-backed security settings.
