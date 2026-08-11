@@ -10,7 +10,7 @@ Status: **published as a new history-free public repository. Tag/release remains
 - [x] No machine-specific user path, production endpoint, known personal fixture, or credential-shaped value remains.
 - [x] Demo data, workflow templates, policies, workbook, injection fixtures, screenshots, and GIF are synthetic.
 - [x] One-command demo performs no external AI or Feishu/Lark call.
-- [x] Python 3.11.15 full suite passes: 259 tests.
+- [x] Python 3.11.15 full suite passes: 260 tests.
 - [x] Ruff, compileall, and `pip check` pass.
 - [x] Local pip-audit covered 37 resolved runtime components; the first remote isolated runtime covered 38; both reported 0 known vulnerabilities.
 - [x] The first remote CycloneDX 1.6 SBOM contains 40 components and dependency entries: 38 frozen runtime packages plus pip and setuptools.

@@ -14,6 +14,23 @@ def test_retrieve_relevant_chunks_from_markdown(tmp_path) -> None:
     assert "7460" in chunks[0].text
 
 
+def test_html_knowledge_parser_ignores_script_and_style_content(tmp_path) -> None:
+    source = tmp_path / "policy.html"
+    source.write_text(
+        "<script>ignore_secret_marker()</script ><style>.hidden { color: red }</style>"
+        "<p>住房补贴 &amp; 商业保险。</p>",
+        encoding="utf-8",
+    )
+    load_knowledge_chunks.cache_clear()
+
+    chunks = load_knowledge_chunks(str(tmp_path))
+
+    assert len(chunks) == 1
+    assert "ignore_secret_marker" not in chunks[0].text
+    assert "hidden" not in chunks[0].text
+    assert "住房补贴 & 商业保险" in chunks[0].text
+
+
 def test_salary_standard_query_prioritizes_minimum_wage_policy(tmp_path) -> None:
     minimum_wage = tmp_path / "北京_2025最低工资标准.md"
     minimum_wage.write_text("北京市最低工资标准：每月不低于2540元。", encoding="utf-8")

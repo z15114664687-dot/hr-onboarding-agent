@@ -2,7 +2,7 @@
 
 Audit date: 2026-08-11  
 Scope: the history-free `hr-onboarding-agent-public` snapshot  
-Decision: **published after the initial remote Python, Docker, CodeQL, and supply-chain workflows passed; release tagging remains gated on owner licensing confirmation and signed-tag setup.**
+Decision: **published after the initial remote Python, Docker, CodeQL, and supply-chain workflows passed; release tagging remains gated on CodeQL high-severity alert disposition, owner licensing confirmation, and signed-tag setup.**
 
 No known credential, private key, local database, upload directory, production endpoint, personal record, symlink, nested Git repository, oversized file, or current runtime dependency vulnerability remains in the release candidate. This is a point-in-time engineering review, not a certification, legal opinion, or guarantee that the application is vulnerability-free.
 
@@ -19,7 +19,7 @@ No known credential, private key, local database, upload directory, production e
 | Gate | Result |
 | --- | --- |
 | Python | 3.11.15 local isolated runtime |
-| Tests | 259 passed; one upstream Starlette `httpx2` migration warning |
+| Tests | 260 passed; one upstream Starlette `httpx2` migration warning |
 | Ruff | 0 findings with Python 3.11 target |
 | Compile | `app` and `scripts` compile successfully |
 | Dependency consistency | `pip check` reports no broken requirements |
@@ -91,6 +91,18 @@ Residual: valid-looking PDF/Office files are not malware-scanned or content-disa
 
 The Gemini gateway bind warning is an intentional server behavior: its host is configurable and defaults to an external container bind. Bandit B104 is suppressed on that single reviewed line with an explanatory comment.
 
+### CodeQL high-severity review
+
+The first authenticated alert readback found 12 high-severity alerts even though the CodeQL workflow completed successfully. One `py/bad-tag-filter` finding was valid: regular expressions were being used to strip script/style elements from local HTML knowledge sources. It was replaced with Python's `HTMLParser` and covered by a malformed-end-tag regression test.
+
+The other 11 `py/path-injection` findings are false-positive data-flow results after manual reachability review:
+
+- the HR-only file-review endpoint is protected by HR authentication and resolves the requested path before enforcing upload-root containment, regular-file status, and the configured size limit;
+- candidate uploads require a case-bound candidate session and same-origin request, validate the required material type, reduce the supplied name to a basename, enforce extension/MIME/magic-byte allowlists and size limits, sanitize every path segment, add a server-generated nonce, and enforce resolved-path containment under the configured upload root before writing; and
+- downstream OCR/review/stat calls receive only the server-created confined path in production; no alternate untrusted production caller exists.
+
+These path alerts may be dismissed as false positives only with the above rationale recorded in GitHub. Any future caller that accepts a path directly must repeat upload-root confinement before file access.
+
 ## License review
 
 The runtime inventory contains permissive Apache, BSD, ISC, MIT, PSF, Unlicense, and certifi's MPL-2.0 package terms. No unknown, GPL, AGPL, or proprietary classifier was reported. Dependency license compatibility does not establish ownership of this application's source; the repository owner must still confirm the right to release every included source file under Apache-2.0 and add any required NOTICE attribution.
@@ -99,7 +111,7 @@ The runtime inventory contains permissive Apache, BSD, ISC, MIT, PSF, Unlicense,
 
 Release-owner actions:
 
-- review any CodeQL alerts;
+- close the parser alert through the verified fix and dismiss only the 11 manually reviewed path findings as false positives;
 - confirm code ownership/licensing and add any required NOTICE attribution;
 - verify the README badges/GIF and demo from a fresh public clone; and
 - configure signed-tag tooling before creating `v0.1.0`.
@@ -115,4 +127,4 @@ Production controls, not public-source blockers:
 
 ## Conclusion
 
-The code, data, dependency, workflow, provider, history-isolation, and initial remote CI gates support the published public source snapshot. Do not create the `v0.1.0` release until the owner completes the remaining licensing, artifact review, public-clone, and signed-tag checks in `PUBLIC_RELEASE_CHECKLIST.md`.
+The code, data, dependency, workflow, provider, history-isolation, and initial remote CI gates support the published public source snapshot. Do not create the `v0.1.0` release until no unresolved high-severity CodeQL alert remains and the owner completes the remaining licensing, public-clone, and signed-tag checks in `PUBLIC_RELEASE_CHECKLIST.md`.

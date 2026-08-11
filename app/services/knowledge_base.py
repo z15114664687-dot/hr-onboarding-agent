@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import html
 import logging
 import re
 import zipfile
 from dataclasses import dataclass, field
 from functools import lru_cache
+from html.parser import HTMLParser
 from pathlib import Path
 from typing import Iterable
 
@@ -35,6 +35,29 @@ INTERNAL_BENEFIT_TOPIC_KEYWORDS = (
     "客户拜访",
     "路演",
 )
+
+
+class _HTMLTextExtractor(HTMLParser):
+    """Collect visible HTML text without treating regexes as an HTML parser."""
+
+    _SKIPPED_TAGS = {"script", "style"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._skip_depth = 0
+        self.parts: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag.lower() in self._SKIPPED_TAGS:
+            self._skip_depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() in self._SKIPPED_TAGS and self._skip_depth:
+            self._skip_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if not self._skip_depth:
+            self.parts.append(data)
 
 
 @dataclass(frozen=True)
@@ -144,9 +167,10 @@ def _extract_text(path: Path) -> str:
 
 
 def _html_to_text(raw_html: str) -> str:
-    text = re.sub(r"(?is)<script.*?</script>|<style.*?</style>", " ", raw_html)
-    text = re.sub(r"(?s)<[^>]+>", " ", text)
-    return _normalize_text(html.unescape(text))
+    parser = _HTMLTextExtractor()
+    parser.feed(raw_html)
+    parser.close()
+    return _normalize_text(" ".join(parser.parts))
 
 
 def _docx_to_text(path: Path) -> str:
