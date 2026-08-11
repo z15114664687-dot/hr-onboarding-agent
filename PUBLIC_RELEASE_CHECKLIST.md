@@ -36,11 +36,11 @@ Status: **published as a new history-free public repository. Tag/release remains
 
 - [x] Python 3.11 CI passes.
 - [x] Docker image builds and the live `/health` smoke test passes in GitHub Actions.
-- [ ] CodeQL completes with no unresolved high-severity alert.
+- [x] CodeQL completes with no unresolved high-severity alert: one valid parser finding was fixed and 11 manually reviewed path-flow findings were dismissed with recorded false-positive rationale.
 - [x] Supply-chain workflow uploads reviewed pip-audit, runtime freeze, SBOM, license, Bandit, secret-scan, and snapshot-audit evidence.
 - [x] Dependabot recognizes pip, GitHub Actions, and Docker.
 - [x] Enable dependency graph, Dependabot alerts/security updates, secret scanning, push protection, and private vulnerability reporting.
-- [x] Create the `main` ruleset with required checks, Code Owner review, stale-review dismissal, no force push, and no deletion.
+- [x] Create the `main` ruleset with required checks, Code Owner review, stale-review dismissal, no force push, and no deletion; the repository owner has a documented pull-request-only bypass for the solo-maintainer case.
 - [x] Keep Actions token permissions read-only and do not enable duplicate CodeQL default setup.
 - [x] Pin the Python 3.11 base image digest after verifying the first successful build and keep digest updates enabled through Dependabot.
 - [x] Run the zero-credential demo from a fresh public clone; `/health`, HR workspace, and candidate workspace return HTTP 200.

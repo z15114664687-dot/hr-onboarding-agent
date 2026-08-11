@@ -2,7 +2,7 @@
 
 Audit date: 2026-08-11  
 Scope: the history-free `hr-onboarding-agent-public` snapshot  
-Decision: **published after the initial remote Python, Docker, CodeQL, and supply-chain workflows passed; release tagging remains gated on CodeQL high-severity alert disposition, owner licensing confirmation, and signed-tag setup.**
+Decision: **published after the remote Python, Docker, CodeQL, and supply-chain workflows passed and all high-severity CodeQL alerts were resolved or dispositioned; release tagging remains gated on owner licensing confirmation and signed-tag setup.**
 
 No known credential, private key, local database, upload directory, production endpoint, personal record, symlink, nested Git repository, oversized file, or current runtime dependency vulnerability remains in the release candidate. This is a point-in-time engineering review, not a certification, legal opinion, or guarantee that the application is vulnerability-free.
 
@@ -101,7 +101,9 @@ The other 11 `py/path-injection` findings are false-positive data-flow results a
 - candidate uploads require a case-bound candidate session and same-origin request, validate the required material type, reduce the supplied name to a basename, enforce extension/MIME/magic-byte allowlists and size limits, sanitize every path segment, add a server-generated nonce, and enforce resolved-path containment under the configured upload root before writing; and
 - downstream OCR/review/stat calls receive only the server-created confined path in production; no alternate untrusted production caller exists.
 
-These path alerts may be dismissed as false positives only with the above rationale recorded in GitHub. Any future caller that accepts a path directly must repeat upload-root confinement before file access.
+On 2026-08-11, the repository owner explicitly authorized dismissing CodeQL alerts #1–#11 as false positives. Each alert now records the above rationale in GitHub. Any future caller that accepts a path directly must repeat upload-root confinement before file access.
+
+The valid parser finding remains fixed in this pull request and the pull-request CodeQL analysis passes. After merge, authenticated default-branch readback must confirm that no open high- or critical-severity alert remains.
 
 ## License review
 
@@ -111,7 +113,6 @@ The runtime inventory contains permissive Apache, BSD, ISC, MIT, PSF, Unlicense,
 
 Release-owner actions:
 
-- close the parser alert through the verified fix and dismiss only the 11 manually reviewed path findings as false positives;
 - confirm code ownership/licensing and add any required NOTICE attribution;
 - verify the README badges/GIF on the public repository page; and
 - configure signed-tag tooling before creating `v0.1.0`.
@@ -127,4 +128,4 @@ Production controls, not public-source blockers:
 
 ## Conclusion
 
-The code, data, dependency, workflow, provider, history-isolation, and initial remote CI gates support the published public source snapshot. Do not create the `v0.1.0` release until no unresolved high-severity CodeQL alert remains and the owner completes the remaining licensing, public-clone, and signed-tag checks in `PUBLIC_RELEASE_CHECKLIST.md`.
+The code, data, dependency, workflow, provider, history-isolation, and remote CI gates support the published public source snapshot. Do not create the `v0.1.0` release until the owner completes the remaining licensing, README-rendering, and signed-tag checks in `PUBLIC_RELEASE_CHECKLIST.md`.
