@@ -1,6 +1,6 @@
 fastapi==0.141.1
-uvicorn[standard]==0.52.1
-SQLAlchemy==2.0.51
+uvicorn[standard]==0.52.3
+SQLAlchemy==2.0.52
 pydantic==2.13.4
 pydantic-settings==2.15.0
 email-validator==2.3.0
@@ -10,5 +10,5 @@ APScheduler==3.11.3
 lark-oapi==1.7.2
 python-dotenv==1.2.2
 PyYAML==6.0.3
-pypdf==6.15.0
+pypdf==6.16.1
 pypinyin==0.55.0
